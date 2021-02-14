@@ -13,14 +13,27 @@ public class SmallFile implements Comparable<SmallFile> {
 
     private String fileName;
 
+    private boolean inMemory;
+
     private long fileSize;
 
-    public SmallFile(String srcPath, String destPath) throws RuntimeException {
+    public SmallFile(String srcPath, String destPath) throws SFMException {
+       this(srcPath, destPath, false, 0);
+
+    }
+
+    public SmallFile(String destPath, long fileSize) throws SFMException {
+        this(null, destPath, true, fileSize);
+    }
+
+    public SmallFile(String srcPath, String destPath, boolean inMemory, long fileSize) throws SFMException {
+        this.inMemory = inMemory;
         this.srcPath = srcPath;
         if (! Utils.isValidDestPath(destPath)) {
-            throw new RuntimeException("Invalid dest path.");
+            throw new SFMException("Invalid dest path.");
         }
         this.destPath = destPath;
+        this.fileSize = fileSize;
     }
 
     public String getSrcPath() {
@@ -32,7 +45,7 @@ public class SmallFile implements Comparable<SmallFile> {
     }
 
     public long getFileSize() {
-        if (fileSize == 0) {
+        if (fileSize == 0 && !inMemory) {
             File file = new File(srcPath);
             fileSize = file.length();
         }
@@ -63,6 +76,14 @@ public class SmallFile implements Comparable<SmallFile> {
         } else {
             return indexName + "/index";
         }
+    }
+
+    public boolean isInMemory() {
+        return inMemory;
+    }
+
+    public void setInMemory(boolean inMemory) {
+        this.inMemory = inMemory;
     }
 
     @Override

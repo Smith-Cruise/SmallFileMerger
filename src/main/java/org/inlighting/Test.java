@@ -14,11 +14,12 @@ public class Test {
     static final Logger LOGGER = LogManager.getLogger(Test.class);
 
     public static void main(String[] args) throws IOException {
-        FileChannel out = new FileOutputStream("out.txt").getChannel();
-        FileChannel ina = new FileInputStream("a").getChannel();
-        FileChannel inb = new FileInputStream("b").getChannel();
-        ina.transferTo(0, 2048, out);
-        inb.transferTo(0, 2048, out);
-        out.close();
+        byte[] content = new byte[4];
+        change(content);
+        System.out.println(content[0]);
+    }
+
+    private static void change(byte[] content) {
+        content[0] = 'a';
     }
 }

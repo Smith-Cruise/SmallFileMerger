@@ -32,13 +32,13 @@ public class SmallFileTests {
     }
 
     @Test
-    void fileSizeTest() {
+    void fileSizeTest() throws SFMException{
         SmallFile smallFile = new SmallFile(PATH_NAME, "/hello");
         assertEquals(11, smallFile.getFileSize());
     }
 
     @Test
-    void nameTest() {
+    void nameTest() throws SFMException {
         SmallFile smallFile1 = new SmallFile(PATH_NAME, "/hello");
         assertEquals("/", smallFile1.getIndexName());
         assertEquals("hello", smallFile1.getFileName());
