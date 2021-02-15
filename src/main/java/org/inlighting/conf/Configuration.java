@@ -3,12 +3,15 @@ package org.inlighting.conf;
 public class Configuration {
     private String dataOutputFolder;
 
+    private String indexOutputFolder;
+
     private long blockSize;
 
     private long maxMemory;
 
-    public Configuration(String dataOutputFolder, long blockSize, long maxMemory) {
+    public Configuration(String dataOutputFolder, String indexOutputFolder, long blockSize, long maxMemory) {
         this.dataOutputFolder = dataOutputFolder;
+        this.indexOutputFolder = indexOutputFolder;
         this.blockSize = blockSize;
         this.maxMemory = maxMemory;
     }
@@ -23,5 +26,9 @@ public class Configuration {
 
     public long getMaxMemory() {
         return maxMemory;
+    }
+
+    public String getIndexOutputFolder() {
+        return indexOutputFolder;
     }
 }

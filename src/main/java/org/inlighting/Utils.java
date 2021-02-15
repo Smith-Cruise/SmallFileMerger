@@ -1,5 +1,7 @@
 package org.inlighting;
 
+import java.io.File;
+
 public class Utils {
 
     public static boolean isValidDestPath(String destPath) {
@@ -15,7 +17,20 @@ public class Utils {
         return valid;
     }
 
+    public static void deleteIfExist(File file) {
+        if(!file.exists()) return;
 
+        if(file.isFile() || file.list()==null) {
+            file.delete();
+        }else {
+            File[] files = file.listFiles();
+            for(File a:files) {
+                deleteIfExist(a);
+            }
+            file.delete();
+        }
+
+    }
 
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;

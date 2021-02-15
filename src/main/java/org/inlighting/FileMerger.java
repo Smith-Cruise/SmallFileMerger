@@ -38,6 +38,9 @@ public class FileMerger {
             throw new SFMException("File merger is already initialized");
         }
         dataOutputFolder = configuration.getDataOutputFolder();
+        File file = new File(dataOutputFolder);
+        Utils.deleteIfExist(file);
+        file.mkdir();
         blockSize = configuration.getBlockSize();
         memoryManager = new MemoryManager(configuration, this);
         mergedMap = new HashMap<>(5);
@@ -61,30 +64,55 @@ public class FileMerger {
         putFileInQueue(smallFile);
     }
 
-    private void putFileInQueue(SmallFile smallFile) throws SFMException {
-        String indexName = smallFile.getIndexName();
-        long fileSize = smallFile.getFileSize();
 
+    private void mergeIfQueueFull(String indexName, long expectSize) {
         if (mergedMapSize.containsKey(indexName)) {
-            long nowSize = 0;
-            long beforeSize = 0;
-            while (true) {
-
-                beforeSize = mergedMapSize.get(indexName);
-                nowSize = beforeSize + fileSize;
-                if (nowSize < beforeSize) {
-                    break;
-                } else {
-                    mergeFile(indexName);
-                }
-
+            long beforeSize = mergedMapSize.get(indexName);
+            long nowSize = beforeSize + expectSize;
+            LOGGER.debug("Before size "+beforeSize+", now size "+nowSize);
+            if (nowSize > blockSize) {
+                LOGGER.debug("Need to merge file: " + indexName);
+                List<SmallFile> list = mergedMap.get(indexName);
+                Collections.sort(list);
                 try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
+                    String fileName = getStoreName();
+                    FileChannel output = new FileOutputStream(dataOutputFolder + fileName).getChannel();
+                    for (SmallFile smallFile: list) {
+                        if (smallFile.isInMemory()) {
+                            ByteBuffer content = memoryManager.getFile(smallFile.getDestPath());
+
+                            LOGGER.debug("write file "+ fileName);
+                            output.write(content);
+//                            ByteBuffer b = ByteBuffer.allocateDirect(10);
+//                            b.putChar('a');
+//                            output.write(b);
+                            memoryManager.rmFile(smallFile.getDestPath());
+                        } else {
+                            FileChannel input = new FileInputStream(smallFile.getSrcPath()).getChannel();
+                            input.transferTo(0, input.size(), output);
+                            input.close();
+                        }
+
+                    }
+                    output.close();
+                    mergedMap.remove(indexName);
+                    mergedMapSize.remove(indexName);
+
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            mergedMapSize.replace(indexName, beforeSize, nowSize);
+
+        }
+    }
+
+    private void putFileInQueue(SmallFile smallFile) throws SFMException {
+        String indexName = smallFile.getIndexName();
+        long fileSize = smallFile.getFileSize();
+        mergeIfQueueFull(indexName, fileSize);
+        if (mergedMapSize.containsKey(indexName)) {
+            long currentSize = mergedMapSize.get(indexName);
+            mergedMapSize.replace(indexName, currentSize, currentSize + fileSize);
         } else {
             mergedMapSize.put(indexName, fileSize);
         }
@@ -97,8 +125,6 @@ public class FileMerger {
             list.add(smallFile);
             mergedMap.put(indexName, list);
         }
-
-
     }
 
     public void mergeSmallestQueue() throws SFMException {
@@ -107,29 +133,7 @@ public class FileMerger {
     }
 
     private void mergeFile(String indexName) throws SFMException {
-        List<SmallFile> list = mergedMap.get(indexName);
-        Collections.sort(list);
-        try {
-            FileChannel output = new FileOutputStream(dataOutputFolder + getStoreName()).getChannel();
-            for (SmallFile smallFile: list) {
-                if (smallFile.isInMemory()) {
-                    ByteBuffer content = memoryManager.getFile(smallFile.getDestPath());
-                    output.write(content);
-                    memoryManager.rmFile(smallFile.getDestPath());
-                } else {
-                    FileChannel input = new FileInputStream(smallFile.getSrcPath()).getChannel();
-                    input.transferTo(0, input.size(), output);
-                    input.close();
-                }
 
-            }
-            output.close();
-            mergedMap.remove(indexName);
-            mergedMapSize.remove(indexName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private String getStoreName() {

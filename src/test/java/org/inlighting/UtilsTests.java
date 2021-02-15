@@ -2,16 +2,12 @@ package org.inlighting;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class UtilsTests {
-
-    @Test
-    void generateA_1M_File() {
-//        generateFile("hello", 'a', 1024);
-    }
 
     public static void generateFile(String filename, char a, long size) {
         try {
@@ -21,6 +17,11 @@ public class UtilsTests {
             e.printStackTrace();
         }
     }
+
+    public static byte[] generateContent(char a, long size) {
+        return getRepeatedStrings(a, size);
+    }
+
 
     private static byte[] getRepeatedStrings(char a, long times) {
         StringBuilder stringBuilder = new StringBuilder();

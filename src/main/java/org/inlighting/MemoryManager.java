@@ -27,6 +27,10 @@ public class MemoryManager {
         this.fileMerger = fileMerger;
     }
 
+    public MemoryManager(Configuration configuration) {
+        this(configuration, null);
+    }
+
     public void rmFile(String destPath) throws SFMException {
         fileMap.remove(destPath);
     }
@@ -50,6 +54,7 @@ public class MemoryManager {
         // todo long -> int
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(content.length);
         byteBuffer.put(content);
+        System.out.println(byteBuffer.remaining());
         currentMemory += fileSize;
         fileMap.put(destPath, new MemoryEntity(fileSize, byteBuffer));
     }
@@ -60,6 +65,7 @@ public class MemoryManager {
         }
 
         MemoryEntity memoryEntity = fileMap.get(destPath);
+        memoryEntity.byteBuffer.flip();
         return memoryEntity.byteBuffer;
     }
 
