@@ -23,7 +23,7 @@ public class LocalFileMergerTests {
 
     @AfterEach
     void clean() {
-        localFileMerger.close();
+//        localFileMerger.close();
     }
 
     void generateDiskFiles() {

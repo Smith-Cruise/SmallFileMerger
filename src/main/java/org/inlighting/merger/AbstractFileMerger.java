@@ -32,7 +32,7 @@ public abstract class AbstractFileMerger implements FileMerger{
         checkSFM();
         INDEX_OUTPUT_FOLDER = configuration.getIndexOutputFolder();
         DATA_OUTPUT_FOLDER = configuration.getDataOutputFolder();
-//        MEMORY_MANAGER = new MemoryManager(configuration, this);
+        MEMORY_MANAGER = new MemoryManager(configuration, this);
         BLOCK_SIZE = configuration.getBlockSize();
         MERGE_MAP = new HashMap<>(5);
         MERGE_MAP_SIZE = new HashMap<>(5);
@@ -82,18 +82,30 @@ public abstract class AbstractFileMerger implements FileMerger{
         }
     }
 
-    private String getStoreName() {
+    protected String getStoreName() {
         return String.valueOf(System.currentTimeMillis()) + ".data";
     }
 
     @Override
     public void mergeSmallestQueue() throws SFMException {
-        // todo
+        long smallestSize = BLOCK_SIZE * 2 * 1024 * 1024;
+        String smallestKey = null;
+        for (String key: MERGE_MAP_SIZE.keySet()) {
+            long size = MERGE_MAP_SIZE.get(key);
+            if (size < smallestSize) {
+                smallestSize = size;
+                smallestKey = key;
+            }
+        }
+        merge(smallestKey);
     }
 
     @Override
     public void close() throws SFMException {
-        // todo
+        for (String key: MERGE_MAP_SIZE.keySet()) {
+            merge(key);
+        }
+        isClosed = true;
     }
 
     public void checkClosed() throws SFMException {

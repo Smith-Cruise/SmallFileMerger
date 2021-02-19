@@ -10,4 +10,9 @@ public class SFMException extends IOException {
     public SFMException(String message) {
         super(message);
     }
+
+    public SFMException(Throwable cause) {
+        super(cause);
+    }
+
 }

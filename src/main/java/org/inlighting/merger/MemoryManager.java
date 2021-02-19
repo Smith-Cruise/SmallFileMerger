@@ -18,14 +18,14 @@ public class MemoryManager {
 
     private long currentMemory = 0;
 
-    private Map<String, MemoryEntity> fileMap;
+    private final Map<String, MemoryEntity> fileMap;
 
-    private LocalFileMerger localFileMerger;
+    private final FileMerger fileMerger;
 
-    public MemoryManager(Configuration configuration, LocalFileMerger localFileMerger) {
+    public MemoryManager(Configuration configuration, FileMerger fileMerger) {
         MAX_MEMORY = configuration.getMaxMemory();
         fileMap = new HashMap<>();
-        this.localFileMerger = localFileMerger;
+        this.fileMerger = fileMerger;
     }
 
     public MemoryManager(Configuration configuration) {
@@ -46,10 +46,10 @@ public class MemoryManager {
         long fileSize = content.length;
         while ((currentMemory + fileSize) >= MAX_MEMORY) {
             LOGGER.debug("Key "+ destPath +" out of memory");
-            if (localFileMerger == null) {
+            if (fileMerger == null) {
                 throw new SFMException("LocalFileMerger is not initialized.");
             }
-            localFileMerger.mergeSmallestQueue();
+            fileMerger.mergeSmallestQueue();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
