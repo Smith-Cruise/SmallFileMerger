@@ -1,4 +1,4 @@
-package org.inlighting;
+package org.inlighting.util;
 
 import java.io.File;
 

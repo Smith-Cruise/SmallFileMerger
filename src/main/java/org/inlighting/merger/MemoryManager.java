@@ -1,7 +1,8 @@
-package org.inlighting;
+package org.inlighting.merger;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.inlighting.SFMException;
 import org.inlighting.conf.Configuration;
 
 import java.nio.ByteBuffer;
@@ -19,12 +20,12 @@ public class MemoryManager {
 
     private Map<String, MemoryEntity> fileMap;
 
-    private FileMerger fileMerger;
+    private LocalFileMerger localFileMerger;
 
-    public MemoryManager(Configuration configuration, FileMerger fileMerger) {
+    public MemoryManager(Configuration configuration, LocalFileMerger localFileMerger) {
         MAX_MEMORY = configuration.getMaxMemory();
         fileMap = new HashMap<>();
-        this.fileMerger = fileMerger;
+        this.localFileMerger = localFileMerger;
     }
 
     public MemoryManager(Configuration configuration) {
@@ -36,7 +37,8 @@ public class MemoryManager {
     }
 
     // todo Big file, the byte array is too big. byte[] should just be a buffer,.
-    public void putFile(String destPath, byte[] content) throws SFMException {
+    public void storeFile(String destPath, byte[] content) throws SFMException {
+        LOGGER.debug(String.format("Store <%s> in memory.", destPath));
         if (fileMap.containsKey(destPath)) {
             throw new SFMException("Key "+ destPath +" already exists");
         }
@@ -44,7 +46,10 @@ public class MemoryManager {
         long fileSize = content.length;
         while ((currentMemory + fileSize) >= MAX_MEMORY) {
             LOGGER.debug("Key "+ destPath +" out of memory");
-            fileMerger.mergeSmallestQueue();
+            if (localFileMerger == null) {
+                throw new SFMException("LocalFileMerger is not initialized.");
+            }
+            localFileMerger.mergeSmallestQueue();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

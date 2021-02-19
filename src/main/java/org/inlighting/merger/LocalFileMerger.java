@@ -1,19 +1,21 @@
-package org.inlighting;
+package org.inlighting.merger;
 
 
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.inlighting.SFMException;
 import org.inlighting.conf.Configuration;
+import org.inlighting.util.Utils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.*;
 
-public class FileMerger {
+public class LocalFileMerger {
 
-    static final Logger LOGGER = LogManager.getLogger(FileMerger.class);
+    static final Logger LOGGER = LogManager.getLogger(LocalFileMerger.class);
 
     private Map<String, List<SmallFile>> mergedMap;
 

@@ -1,6 +1,8 @@
-package org.inlighting;
+package org.inlighting.merger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.inlighting.SFMException;
+import org.inlighting.util.Utils;
 
 import java.io.File;
 
@@ -87,7 +89,7 @@ public class SmallFile implements Comparable<SmallFile> {
     }
 
     @Override
-    public int compareTo(org.inlighting.SmallFile o) {
+    public int compareTo(SmallFile o) {
         return destPath.compareTo(o.destPath);
     }
 }

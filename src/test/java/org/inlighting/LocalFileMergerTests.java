@@ -1,6 +1,8 @@
 package org.inlighting;
 
-import org.junit.jupiter.api.AfterAll;
+import org.inlighting.merger.LocalFileMerger;
+import org.inlighting.merger.FileMergerFactory;
+import org.inlighting.util.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,20 +10,20 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Random;
 
-public class FileMergerTests {
+public class LocalFileMergerTests {
 
     private static String DiskFilesFolder = "generated_files/";
 
-    private static FileMerger fileMerger;
+    private static LocalFileMerger localFileMerger;
 
     @BeforeEach
     void initialize() {
-        fileMerger = FileMergerFactory.getInstance();
+        localFileMerger = FileMergerFactory.getInstance();
     }
 
     @AfterEach
     void clean() {
-        fileMerger.close();
+        localFileMerger.close();
     }
 
     void generateDiskFiles() {
@@ -31,7 +33,7 @@ public class FileMergerTests {
         for (int i=0; i<10; i++) {
             UtilsTests.generateFile(DiskFilesFolder + i + ".txt", (char) i, 2048);
         }
-        fileMerger = FileMergerFactory.getInstance();
+        localFileMerger = FileMergerFactory.getInstance();
     }
 
     void deleteGeneratedDiskFiles() {
@@ -41,13 +43,13 @@ public class FileMergerTests {
 
     @Test
     void uploadBatch10MFiles() {
-//        FileMerger fileMerger = new FileMerger("output", 5);
+//        LocalFileMerger localFileMerger = new LocalFileMerger("output", 5);
 //        UtilsTests.generateFile("a", 'a', 2048);
 //        UtilsTests.generateFile("b", 'b', 2048);
 //        UtilsTests.generateFile("c", 'c', 2048);
-//        fileMerger.upload("a", "/a");
-//        fileMerger.upload("b", "/b");
-//        fileMerger.upload("c", "/c");
+//        localFileMerger.upload("a", "/a");
+//        localFileMerger.upload("b", "/b");
+//        localFileMerger.upload("c", "/c");
     }
 
     @Test
@@ -59,7 +61,7 @@ public class FileMergerTests {
                 long size = random.nextInt(10);
                 size = size * 1024 * 1024;
                 byte[] content = UtilsTests.generateContent(c, size);
-                fileMerger.upload("/hello/" + i, content);
+                localFileMerger.upload("/hello/" + i, content);
             }
         } catch (SFMException e) {
             e.printStackTrace();

@@ -1,12 +1,13 @@
 package org.inlighting;
 
 import org.inlighting.conf.Configuration;
+import org.inlighting.merger.MemoryManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class MemoryManagerTests {
 
@@ -23,11 +24,11 @@ public class MemoryManagerTests {
     @Test
     void putAndGetFile() throws SFMException {
         byte[] content = "Hello World".getBytes(StandardCharsets.UTF_8);
-        memoryManager.putFile("test", content);
-        ByteBuffer get = memoryManager.getFile("test");
-        System.out.println(get.remaining());
-        byte[] got = new byte[11];
-        get.get(got);
-        System.out.println(Arrays.toString(got));
+        final String DEST_PATH = "test";
+        memoryManager.putFile(DEST_PATH, content);
+        ByteBuffer get = memoryManager.getFile(DEST_PATH);
+        assertEquals(11, get.remaining());
+        memoryManager.rmFile(DEST_PATH);
+        assertThrows(SFMException.class, () -> memoryManager.getFile(DEST_PATH));
     }
 }

@@ -1,5 +1,6 @@
 package org.inlighting;
 
+import org.inlighting.merger.SmallFile;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
