@@ -9,11 +9,21 @@ public class LocalFileSystemUtils {
         return delete(file, recursive);
     }
 
+    // if file is directory and set recursive false, will not delete.
     public static boolean delete(File file, boolean recursive) {
         if (! file.exists())
             return false;
 
-        if (recursive) {
+        if (!recursive && file.isDirectory()) {
+            if (file.listFiles().length == 0)
+                return file.delete();
+            else
+                return false;
+        }
+
+        if (file.isFile() && file.list() == null) {
+            return file.delete();
+        } else {
             File[] files = file.listFiles();
             if (files == null)
                 return false;
@@ -21,13 +31,6 @@ public class LocalFileSystemUtils {
                 delete(f, false);
             }
             return file.delete();
-        } else {
-            if (file.isFile() || file.list() == null) {
-                return file.delete();
-            } else {
-                return false;
-            }
         }
-
     }
 }

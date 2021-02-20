@@ -1,4 +1,4 @@
-package org.inlighting.protocol;
+package org.inlighting.client;
 
 import java.io.IOException;
 import java.io.InputStream;

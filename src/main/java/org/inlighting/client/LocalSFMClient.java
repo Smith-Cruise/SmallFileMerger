@@ -1,4 +1,4 @@
-package org.inlighting.protocol;
+package org.inlighting.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
