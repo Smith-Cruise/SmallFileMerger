@@ -1,10 +1,15 @@
 package org.inlighting.stream;
 
+import java.io.File;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 abstract class FilterSFMOutputStream extends OutputStream {
+
+    protected File srcFile;
+
+    protected boolean append;
 
     private byte buf[];
 

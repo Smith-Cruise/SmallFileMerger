@@ -18,14 +18,14 @@ public class MemoryManager {
 
     private long currentMemory = 0;
 
-    private final Map<String, MemoryEntity> fileMap;
+    private final Map<String, MemoryEntity> FILE_MAP;
 
-    private final FileMerger fileMerger;
+    private final FileMerger FILE_MERGER;
 
     public MemoryManager(Configuration configuration, FileMerger fileMerger) {
         MAX_MEMORY = configuration.getMaxMemory();
-        fileMap = new HashMap<>();
-        this.fileMerger = fileMerger;
+        FILE_MAP = new HashMap<>();
+        FILE_MERGER = fileMerger;
     }
 
     public MemoryManager(Configuration configuration) {
@@ -33,23 +33,23 @@ public class MemoryManager {
     }
 
     public void rmFile(String destPath) throws SFMException {
-        fileMap.remove(destPath);
+        FILE_MAP.remove(destPath);
     }
 
     // todo Big file, the byte array is too big. byte[] should just be a buffer,.
     public void storeFile(String destPath, byte[] content) throws SFMException {
         LOGGER.debug(String.format("Store <%s> in memory.", destPath));
-        if (fileMap.containsKey(destPath)) {
-            throw new SFMException("Key "+ destPath +" already exists");
+        if (FILE_MAP.containsKey(destPath)) {
+            throw new SFMException(String.format("Key %s already exists.", destPath));
         }
 
         long fileSize = content.length;
         while ((currentMemory + fileSize) >= MAX_MEMORY) {
-            LOGGER.debug("Key "+ destPath +" out of memory");
-            if (fileMerger == null) {
-                throw new SFMException("LocalFileMerger is not initialized.");
+            LOGGER.debug(String.format("Key %s out of memory", destPath));
+            if (FILE_MERGER == null) {
+                throw new SFMException("FileMerger is not initialized.");
             }
-            fileMerger.mergeSmallestQueue();
+            FILE_MERGER.mergeSmallestQueue();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -59,29 +59,36 @@ public class MemoryManager {
         // todo long -> int
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(content.length);
         byteBuffer.put(content);
-        System.out.println(byteBuffer.remaining());
         currentMemory += fileSize;
-        fileMap.put(destPath, new MemoryEntity(fileSize, byteBuffer));
+        FILE_MAP.put(destPath, new MemoryEntity(fileSize, byteBuffer));
     }
 
     public ByteBuffer getFile(String destPath) throws SFMException {
-        if (! fileMap.containsKey(destPath)) {
-            throw new SFMException("Key "+ destPath +" isn't exists");
+        if (! FILE_MAP.containsKey(destPath)) {
+            throw new SFMException(String.format("Key %s isn't exists", destPath));
         }
 
-        MemoryEntity memoryEntity = fileMap.get(destPath);
+        MemoryEntity memoryEntity = FILE_MAP.get(destPath);
         memoryEntity.byteBuffer.flip();
         return memoryEntity.byteBuffer;
     }
 
 
-    private class MemoryEntity {
+    private static class MemoryEntity {
         private long size;
 
         private ByteBuffer byteBuffer;
 
         public MemoryEntity(long size, ByteBuffer byteBuffer) {
             this.size = size;
+            this.byteBuffer = byteBuffer;
+        }
+
+        public void setSize(long size) {
+            this.size = size;
+        }
+
+        public void setByteBuffer(ByteBuffer byteBuffer) {
             this.byteBuffer = byteBuffer;
         }
 

@@ -21,14 +21,14 @@ public class MemoryManagerTests {
         memoryManager = new MemoryManager(configuration);
     }
 
-    @Test
-    void putAndGetFile() throws SFMException {
-        byte[] content = "Hello World".getBytes(StandardCharsets.UTF_8);
-        final String DEST_PATH = "test";
-        memoryManager.putFile(DEST_PATH, content);
-        ByteBuffer get = memoryManager.getFile(DEST_PATH);
-        assertEquals(11, get.remaining());
-        memoryManager.rmFile(DEST_PATH);
-        assertThrows(SFMException.class, () -> memoryManager.getFile(DEST_PATH));
-    }
+//    @Test
+//    void putAndGetFile() throws SFMException {
+//        byte[] content = "Hello World".getBytes(StandardCharsets.UTF_8);
+//        final String DEST_PATH = "test";
+//        memoryManager.putFile(DEST_PATH, content);
+//        ByteBuffer get = memoryManager.getFile(DEST_PATH);
+//        assertEquals(11, get.remaining());
+//        memoryManager.rmFile(DEST_PATH);
+//        assertThrows(SFMException.class, () -> memoryManager.getFile(DEST_PATH));
+//    }
 }

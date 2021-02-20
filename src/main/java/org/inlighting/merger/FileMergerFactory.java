@@ -11,8 +11,37 @@ public class FileMergerFactory {
 
     }
 
-    public static synchronized FileMerger getInstance() {
-        return fileMerger;
+    public static synchronized FileMerger getInstance(Class<? extends FileMerger> cls, Configuration configuration) {
+        try {
+            if (fileMerger == null) {
+                if (cls == LocalFileMerger.class) {
+                    fileMerger = new LocalFileMerger(configuration);
+                    return fileMerger;
+                } else {
+                    // todo
+                    return null;
+                }
+            } else {
+                if (fileMerger.getClass() == cls) {
+                    return fileMerger;
+                } else {
+                    // todo
+                    return null;
+                }
+            }
+        } catch (SFMException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Configuration getDefaultConfiguration() {
+        String dataOutputFolder = "sfm/data";
+        String indexOutputFolder = "sfm/index";
+        long blockSize = 10 * 1024 * 1024;
+        long maxMemory = 512 * 1024 * 1024;
+        Configuration configuration = new Configuration(dataOutputFolder, indexOutputFolder ,blockSize, maxMemory);
+        return configuration;
     }
 
 //    public static LocalFileMerger getDefaultInstance() {
