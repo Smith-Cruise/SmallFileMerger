@@ -22,8 +22,10 @@ public class LocalFileSystemUtilsTests {
         dir1.mkdir();
         File dir2 = new File(TEMP_FOLDER + "/dir2");
         dir2.mkdir();
-        File dir1dir = new File(dir1.getPath() + "/dir");
+        File dir1dir = new File(TEMP_FOLDER + "/dir1/dir");
         dir1dir.mkdir();
+        File dir1dirdir = new File(TEMP_FOLDER + "/dir1/dir/dir");
+        dir1dirdir.mkdir();
     }
 
     @Test
@@ -44,6 +46,9 @@ public class LocalFileSystemUtilsTests {
 
     @AfterAll
     static void deleteFiles() {
+        File dir1dirdir = new File(TEMP_FOLDER + "/dir1/dir/dir");
+        dir1dirdir.delete();
+
         File dir1dir = new File(TEMP_FOLDER + "/dir1/dir");
         dir1dir.delete();
 

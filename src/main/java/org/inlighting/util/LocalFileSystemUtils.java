@@ -28,7 +28,7 @@ public class LocalFileSystemUtils {
             if (files == null)
                 return false;
             for (File f: files) {
-                delete(f, false);
+                delete(f, true);
             }
             return file.delete();
         }
