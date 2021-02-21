@@ -24,7 +24,7 @@ public class LocalSFMOutputStream extends FilterSFMOutputStream {
     }
 
     public LocalSFMOutputStream(File file, boolean append) throws FileNotFoundException {
-        Configuration configuration = new Configuration("sfm/data", "sfm/index",
+        Configuration configuration = new Configuration("sfm/data/", "sfm/index/",
                 4*1024*1024, 128*1024*1024);
         this.srcFile = file;
         this.append = append;

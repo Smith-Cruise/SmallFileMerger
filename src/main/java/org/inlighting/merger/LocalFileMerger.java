@@ -42,7 +42,7 @@ public class LocalFileMerger extends AbstractFileMerger {
     public void merge(String indexName) throws SFMException {
         try {
             String dataFilename = getStoreName();
-            LOGGER.debug(String.format("Write data output %s", dataFilename));
+            LOGGER.debug(String.format("Write data output %s, merge index %s", dataFilename, indexName));
             FileChannel output = new FileOutputStream(DATA_OUTPUT_FOLDER + dataFilename).getChannel();
             List<SmallFile> list = MERGE_MAP.get(indexName);
             Collections.sort(list);

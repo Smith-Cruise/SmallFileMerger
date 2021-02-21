@@ -5,10 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.inlighting.SFMException;
 import org.inlighting.conf.Configuration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractFileMerger implements FileMerger{
 
@@ -29,14 +27,14 @@ public abstract class AbstractFileMerger implements FileMerger{
     protected final long BLOCK_SIZE;
 
     public AbstractFileMerger(Configuration configuration) throws SFMException {
-        checkSFM();
         INDEX_OUTPUT_FOLDER = configuration.getIndexOutputFolder();
         DATA_OUTPUT_FOLDER = configuration.getDataOutputFolder();
         MEMORY_MANAGER = new MemoryManager(configuration, this);
         BLOCK_SIZE = configuration.getBlockSize();
-        MERGE_MAP = new HashMap<>(5);
-        MERGE_MAP_SIZE = new HashMap<>(5);
+        MERGE_MAP = new ConcurrentHashMap<>(5);
+        MERGE_MAP_SIZE = new ConcurrentHashMap<>(5);
         isClosed = false;
+        checkSFM();
     }
 
     @Override
@@ -83,7 +81,7 @@ public abstract class AbstractFileMerger implements FileMerger{
     }
 
     protected String getStoreName() {
-        return String.valueOf(System.currentTimeMillis()) + ".data";
+        return UUID.randomUUID().toString() + ".data";
     }
 
     @Override
@@ -102,6 +100,7 @@ public abstract class AbstractFileMerger implements FileMerger{
 
     @Override
     public void close() throws SFMException {
+        LOGGER.debug("Start to close FileMerger");
         for (String key: MERGE_MAP_SIZE.keySet()) {
             merge(key);
         }

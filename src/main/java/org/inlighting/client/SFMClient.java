@@ -15,4 +15,6 @@ public interface SFMClient {
     OutputStream append(String src) throws IOException;
 
     InputStream open(String src) throws IOException;
+
+    void close() throws IOException;
 }
