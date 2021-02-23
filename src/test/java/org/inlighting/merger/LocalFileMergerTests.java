@@ -1,4 +1,4 @@
-package org.inlighting;
+package org.inlighting.merger;
 
 import org.inlighting.merger.LocalFileMerger;
 import org.inlighting.merger.FileMergerFactory;

@@ -1,5 +1,6 @@
-package org.inlighting;
+package org.inlighting.merger;
 
+import org.inlighting.SFMException;
 import org.inlighting.merger.SmallFile;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +34,7 @@ public class SmallFileTests {
     }
 
     @Test
-    void fileSizeTest() throws SFMException{
+    void fileSizeTest() throws SFMException {
         SmallFile smallFile = new SmallFile(PATH_NAME, "/hello");
         assertEquals(11, smallFile.getFileSize());
     }

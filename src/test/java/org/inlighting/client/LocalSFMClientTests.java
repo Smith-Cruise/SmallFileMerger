@@ -44,9 +44,9 @@ public class LocalSFMClientTests {
 
     @Test
     void uploadMultiFiles() throws IOException {
+        write("/a/c.txt", "/a/c.txt");
         write("/a/a.txt", "/a/a.txt");
         write("/a/b.txt", "/a/b.txt");
-        write("/a/c.txt", "/a/c.txt");
         write("/a.txt", "/a.txt");
         write("/b.txt", "/b.txt");
         write("/b/a.txt", "/b/a.txt");

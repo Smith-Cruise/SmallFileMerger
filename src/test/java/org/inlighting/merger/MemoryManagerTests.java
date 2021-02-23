@@ -1,5 +1,6 @@
-package org.inlighting;
+package org.inlighting.merger;
 
+import org.inlighting.SFMException;
 import org.inlighting.conf.Configuration;
 import org.inlighting.merger.MemoryManager;
 import org.junit.jupiter.api.BeforeAll;
