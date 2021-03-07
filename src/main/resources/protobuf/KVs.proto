@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package org.inlighting.proto;
+
+option java_package = "org.inlighting.proto";
+option java_outer_classname = "KVsProtos";
+
+message KV {
+  required string filename = 1;
+  required uint64 offset = 2;
+  required uint64 length = 3;
+}
+
+message KVs {
+  repeated KV kv = 1;
+}
