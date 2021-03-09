@@ -35,4 +35,15 @@ public class Utils {
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
+
+    public static byte getUnsignedByte (int a) {
+        if (a < 0 || a > 255) {
+            throw new IllegalArgumentException("Invalid number. Range 0<=x<=255.");
+        }
+        return (byte) a;
+    }
+
+    public static int readUnsignedByte(byte a) {
+        return a & 0x0FF;
+    }
 }

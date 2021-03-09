@@ -1,9 +1,7 @@
-package org.inlighting.merger.index;
+package org.inlighting.merger.indexbak;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {

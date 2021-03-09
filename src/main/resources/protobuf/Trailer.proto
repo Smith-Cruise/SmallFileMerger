@@ -6,7 +6,8 @@ option java_package = "org.inlighting.proto";
 option java_outer_classname = "TrailerProtos";
 
 message Trailer {
-  required uint64 kvLength = 1;
-  required uint64 bloomFilterLength = 2;
-  required uint32 trailerLength = 3;
+  required uint32 kvsLength = 1;
+  required string minKey = 2;
+  required string maxKey = 3;
+  required uint32 bloomFilterLength = 4;
 }

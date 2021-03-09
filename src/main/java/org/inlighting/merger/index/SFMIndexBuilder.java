@@ -1,55 +1,108 @@
 package org.inlighting.merger.index;
 
-import java.io.DataOutputStream;
+import org.inlighting.proto.BloomFilterProtos;
+import org.inlighting.proto.KVsProtos;
+import org.inlighting.proto.TrailerProtos;
+import org.inlighting.util.Utils;
+import org.inlighting.util.bloomfilter.BloomFilter;
+import org.inlighting.util.bloomfilter.BloomFilterIO;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class SFMIndexBuilder {
+
     private final String MERGED_FILE;
-    private final int KEY_LENGTH;
 
-    private final int VALUE_LENGTH;
+    private final OutputStream OUT;
 
-    private final int VERSION;
+    private final BloomFilter BLOOM_FILTER;
 
-    private final DataOutputStream OUTPUT;
+    private static final double FPP = 0.05;
+
+    private static final long EXPECTED_ENTRIES = 128 * 1024;
 
     private String minKey;
 
     private String maxKey;
 
-    private char[] tempKey;
+    private String lastKey;
 
-    private char[] tempValue;
+    private final KVsProtos.KVs.Builder KVS_BUILDER;
 
-    public SFMIndexBuilder(String mergedFile, int keyLength, int valueLength, int version, OutputStream outputStream) {
+    public SFMIndexBuilder(String mergedFile, OutputStream outputStream, long expectedEntries, double fpp) {
         MERGED_FILE = mergedFile;
-        KEY_LENGTH = keyLength;
-        VALUE_LENGTH = valueLength;
-        VERSION = version;
-        OUTPUT = new DataOutputStream(outputStream);
+        OUT = outputStream;
+        BLOOM_FILTER = new BloomFilter(expectedEntries, fpp);
+        KVS_BUILDER = KVsProtos.KVs.newBuilder();
+    }
+
+    public static SFMIndexBuilder create(String mergedFile, OutputStream outputStream) {
+       return new SFMIndexBuilder(mergedFile, outputStream, EXPECTED_ENTRIES, FPP);
     }
 
     public void append(String filename, int offset, int length) throws IOException {
-        SFMEntry entry = new SFMEntry(KEY_LENGTH, filename, offset, length);
-        char[] temp = filename.toCharArray();
-        char[] writeFilename = new char[KEY_LENGTH];
-        System.arraycopy(temp, 0, writeFilename, 0, temp.length);
-        for (char c: writeFilename) {
-            OUTPUT.writeChar(c);
+        checkKey(filename);
+
+        KVsProtos.KV.Builder kvBuilder = KVsProtos.KV.newBuilder();
+        kvBuilder.setFilename(filename);
+        kvBuilder.setOffset(offset);
+        kvBuilder.setLength(length);
+        KVsProtos.KV kv = kvBuilder.build();
+        KVS_BUILDER.addKv(kv);
+
+        BLOOM_FILTER.addString(filename);
+    }
+
+    private void checkKey(String key) {
+        if (lastKey == null) {
+            lastKey = key;
         }
-        OUTPUT.writeInt(offset);
-        OUTPUT.write(length);
+
+        if (lastKey.compareTo(key) > 0) {
+            throw new IllegalArgumentException("The key should be ordered.");
+        }
+        lastKey = key;
+
+        if (minKey == null) {
+            minKey = key;
+        } else {
+            if (minKey.compareTo(key) > 0) {
+                minKey = key;
+            }
+        }
+
+        if (maxKey == null) {
+            maxKey = key;
+        } else {
+            if (maxKey.compareTo(key) < 0) {
+                maxKey = key;
+            }
+        }
     }
 
     public void finish() throws IOException {
-        Trailer trailer = new Trailer(MERGED_FILE, KEY_LENGTH, VALUE_LENGTH, VERSION, minKey, maxKey);
-        trailer.write(OUTPUT);
-        OUTPUT.close();
-    }
+        KVsProtos.KVs kvs = KVS_BUILDER.build();
+        kvs.writeTo(OUT);
 
+        BloomFilterProtos.BloomFilter.Builder bloomFilterBuilder = BloomFilterProtos.BloomFilter.newBuilder();
+        BloomFilterIO.serialize(bloomFilterBuilder, BLOOM_FILTER);
+        BloomFilterProtos.BloomFilter bloomFilter = bloomFilterBuilder.build();
+        bloomFilter.writeTo(OUT);
 
-    public static SFMIndexBuilder create(String mergedFile, OutputStream outputStream) {
-        return new SFMIndexBuilder(mergedFile, 1000, 4, 1, outputStream);
+        TrailerProtos.Trailer.Builder trailerBuilder = TrailerProtos.Trailer.newBuilder();
+        trailerBuilder.setKvsLength(kvs.getSerializedSize());
+        trailerBuilder.setMinKey(minKey);
+        trailerBuilder.setMaxKey(maxKey);
+        trailerBuilder.setBloomFilterLength(bloomFilter.getSerializedSize());
+        TrailerProtos.Trailer trailer = trailerBuilder.build();
+        trailer.writeTo(OUT);
+
+        if (trailer.getSerializedSize() > 255) {
+            throw new IOException("Too large trailer.");
+        }
+
+        OUT.write(Utils.getUnsignedByte(trailer.getSerializedSize()));
+        OUT.close();
     }
 }
