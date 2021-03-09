@@ -84,7 +84,7 @@ public class SFMIndexReader {
     }
 
 
-    public void get(String filename) throws IOException {
+    public KV get(String filename) throws IOException {
         if (filename.compareTo(MIN_KEY) < 0 || filename.compareTo(MAX_KEY) > 0) {
             throw new FileNotFoundException();
         }
@@ -107,7 +107,8 @@ public class SFMIndexReader {
         if (kv == null) {
             throw new FileNotFoundException();
         }
-        System.out.println(kv.toString());
+
+        return new KV(kv.getFilename(), kv.getOffset(), kv.getLength());
     }
 
     private KVsProtos.KV binarySearch(String key) {
