@@ -1666,7 +1666,7 @@ public final class KVsProtos {
       "\024org.inlighting.proto\"6\n\002KV\022\020\n\010filename\030" +
       "\001 \002(\t\022\016\n\006offset\030\002 \002(\r\022\016\n\006length\030\003 \002(\r\"+\n" +
       "\003KVs\022$\n\002kv\030\001 \003(\0132\030.org.inlighting.proto." +
-      "KVB!\n\024org.inlighting.protoB\tKVsProtos"
+      "KVB$\n\024org.inlighting.protoB\tKVsProtos\240\001\001"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

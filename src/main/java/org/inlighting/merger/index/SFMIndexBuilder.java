@@ -91,6 +91,7 @@ public class SFMIndexBuilder {
         bloomFilter.writeTo(OUT);
 
         TrailerProtos.Trailer.Builder trailerBuilder = TrailerProtos.Trailer.newBuilder();
+        trailerBuilder.setMergedFile(MERGED_FILE);
         trailerBuilder.setKvsLength(kvs.getSerializedSize());
         trailerBuilder.setMinKey(minKey);
         trailerBuilder.setMaxKey(maxKey);

@@ -9,8 +9,9 @@ public class SFMIndexReaderTests {
 
     @Test
     void read() throws IOException {
-        FileInputStream inputStream = new FileInputStream("index.data");
+        FileInputStream inputStream = new FileInputStream("index");
         SFMIndexReader reader = SFMIndexReader.create(inputStream);
-        reader.get("5555");
+        KV kv = reader.get("5555");
+        System.out.println(kv.toString());
     }
 }

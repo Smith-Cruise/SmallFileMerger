@@ -741,8 +741,8 @@ public final class BloomFilterProtos {
       "\n-src/main/resources/protobuf/BloomFilte" +
       "r.proto\022\024org.inlighting.proto\"7\n\013BloomFi" +
       "lter\022\030\n\020numHashFunctions\030\001 \002(\r\022\016\n\006bitset" +
-      "\030\002 \003(\006B)\n\024org.inlighting.protoB\021BloomFil" +
-      "terProtos"
+      "\030\002 \003(\006B,\n\024org.inlighting.protoB\021BloomFil" +
+      "terProtos\240\001\001"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

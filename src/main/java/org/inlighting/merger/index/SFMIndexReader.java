@@ -21,7 +21,7 @@ public class SFMIndexReader {
 
     private final int TRAILER_LENGTH;
 
-    private final int PRE_READ_SIZE = 258;
+    private final int PRE_READ_SIZE = 256;
 
     private final long INDEX_LENGTH;
 
@@ -45,14 +45,16 @@ public class SFMIndexReader {
         // read trailer length
         FILE_CHANNEL = ((FileInputStream) inputStream).getChannel();
         INDEX_LENGTH = FILE_CHANNEL.size();
-        FILE_CHANNEL.position(INDEX_LENGTH - PRE_READ_SIZE);
-        ByteBuffer temp = ByteBuffer.allocateDirect(PRE_READ_SIZE);
+        long readPosition = (INDEX_LENGTH - PRE_READ_SIZE) <= 0 ? 0: (INDEX_LENGTH - PRE_READ_SIZE);
+        FILE_CHANNEL.position(readPosition);
+        int tempReadSize = (int) (INDEX_LENGTH <= PRE_READ_SIZE? INDEX_LENGTH: PRE_READ_SIZE);
+        ByteBuffer temp = ByteBuffer.allocateDirect(tempReadSize);
         FILE_CHANNEL.read(temp);
-        temp.position(PRE_READ_SIZE - 1);
+        temp.position(tempReadSize - 1);
         TRAILER_LENGTH = Utils.readUnsignedByte(temp.get());
 
         // read trailer
-        temp.position(PRE_READ_SIZE - 1 - TRAILER_LENGTH);
+        temp.position(tempReadSize - 1 - TRAILER_LENGTH);
         byte[] trailerBytes = new byte[TRAILER_LENGTH];
         temp.get(trailerBytes);
         TrailerProtos.Trailer trailer = TrailerProtos.Trailer.parseFrom(trailerBytes);
@@ -62,8 +64,8 @@ public class SFMIndexReader {
         KVS_LENGTH = trailer.getKvsLength();
 
         // If bloom filter length smaller than pre read size, read it. Otherwise, load lazily.
-        if ((BLOOM_FILTER_LENGTH + TRAILER_LENGTH + 1) <= PRE_READ_SIZE) {
-            temp.position(PRE_READ_SIZE - 1 - TRAILER_LENGTH - BLOOM_FILTER_LENGTH);
+        if ((BLOOM_FILTER_LENGTH + TRAILER_LENGTH + 1) <= tempReadSize) {
+            temp.position(tempReadSize - 1 - TRAILER_LENGTH - BLOOM_FILTER_LENGTH);
             byte[] bloomFilterBytes = new byte[BLOOM_FILTER_LENGTH];
             temp.get(bloomFilterBytes);
             BloomFilterProtos.BloomFilter bloomFilter = BloomFilterProtos.BloomFilter.parseFrom(bloomFilterBytes);

@@ -4,10 +4,13 @@ package org.inlighting.proto;
 
 option java_package = "org.inlighting.proto";
 option java_outer_classname = "TrailerProtos";
+option java_generate_equals_and_hash = true;
+
 
 message Trailer {
-  required uint32 kvsLength = 1;
-  required string minKey = 2;
-  required string maxKey = 3;
-  required uint32 bloomFilterLength = 4;
+  required string mergedFile = 1;
+  required uint32 kvsLength = 2;
+  required string minKey = 3;
+  required string maxKey = 4;
+  required uint32 bloomFilterLength = 5;
 }

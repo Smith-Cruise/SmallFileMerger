@@ -19,57 +19,74 @@ public final class TrailerProtos {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required uint32 kvsLength = 1;</code>
+     * <code>required string mergedFile = 1;</code>
+     * @return Whether the mergedFile field is set.
+     */
+    boolean hasMergedFile();
+    /**
+     * <code>required string mergedFile = 1;</code>
+     * @return The mergedFile.
+     */
+    java.lang.String getMergedFile();
+    /**
+     * <code>required string mergedFile = 1;</code>
+     * @return The bytes for mergedFile.
+     */
+    com.google.protobuf.ByteString
+        getMergedFileBytes();
+
+    /**
+     * <code>required uint32 kvsLength = 2;</code>
      * @return Whether the kvsLength field is set.
      */
     boolean hasKvsLength();
     /**
-     * <code>required uint32 kvsLength = 1;</code>
+     * <code>required uint32 kvsLength = 2;</code>
      * @return The kvsLength.
      */
     int getKvsLength();
 
     /**
-     * <code>required string minKey = 2;</code>
+     * <code>required string minKey = 3;</code>
      * @return Whether the minKey field is set.
      */
     boolean hasMinKey();
     /**
-     * <code>required string minKey = 2;</code>
+     * <code>required string minKey = 3;</code>
      * @return The minKey.
      */
     java.lang.String getMinKey();
     /**
-     * <code>required string minKey = 2;</code>
+     * <code>required string minKey = 3;</code>
      * @return The bytes for minKey.
      */
     com.google.protobuf.ByteString
         getMinKeyBytes();
 
     /**
-     * <code>required string maxKey = 3;</code>
+     * <code>required string maxKey = 4;</code>
      * @return Whether the maxKey field is set.
      */
     boolean hasMaxKey();
     /**
-     * <code>required string maxKey = 3;</code>
+     * <code>required string maxKey = 4;</code>
      * @return The maxKey.
      */
     java.lang.String getMaxKey();
     /**
-     * <code>required string maxKey = 3;</code>
+     * <code>required string maxKey = 4;</code>
      * @return The bytes for maxKey.
      */
     com.google.protobuf.ByteString
         getMaxKeyBytes();
 
     /**
-     * <code>required uint32 bloomFilterLength = 4;</code>
+     * <code>required uint32 bloomFilterLength = 5;</code>
      * @return Whether the bloomFilterLength field is set.
      */
     boolean hasBloomFilterLength();
     /**
-     * <code>required uint32 bloomFilterLength = 4;</code>
+     * <code>required uint32 bloomFilterLength = 5;</code>
      * @return The bloomFilterLength.
      */
     int getBloomFilterLength();
@@ -87,6 +104,7 @@ public final class TrailerProtos {
       super(builder);
     }
     private Trailer() {
+      mergedFile_ = "";
       minKey_ = "";
       maxKey_ = "";
     }
@@ -122,25 +140,31 @@ public final class TrailerProtos {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              kvsLength_ = input.readUInt32();
+              mergedFile_ = bs;
               break;
             }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 16: {
               bitField0_ |= 0x00000002;
-              minKey_ = bs;
+              kvsLength_ = input.readUInt32();
               break;
             }
             case 26: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
+              minKey_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
               maxKey_ = bs;
               break;
             }
-            case 32: {
-              bitField0_ |= 0x00000008;
+            case 40: {
+              bitField0_ |= 0x00000010;
               bloomFilterLength_ = input.readUInt32();
               break;
             }
@@ -177,18 +201,66 @@ public final class TrailerProtos {
     }
 
     private int bitField0_;
-    public static final int KVSLENGTH_FIELD_NUMBER = 1;
+    public static final int MERGEDFILE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object mergedFile_;
+    /**
+     * <code>required string mergedFile = 1;</code>
+     * @return Whether the mergedFile field is set.
+     */
+    @java.lang.Override
+    public boolean hasMergedFile() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>required string mergedFile = 1;</code>
+     * @return The mergedFile.
+     */
+    @java.lang.Override
+    public java.lang.String getMergedFile() {
+      java.lang.Object ref = mergedFile_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          mergedFile_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string mergedFile = 1;</code>
+     * @return The bytes for mergedFile.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMergedFileBytes() {
+      java.lang.Object ref = mergedFile_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        mergedFile_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int KVSLENGTH_FIELD_NUMBER = 2;
     private int kvsLength_;
     /**
-     * <code>required uint32 kvsLength = 1;</code>
+     * <code>required uint32 kvsLength = 2;</code>
      * @return Whether the kvsLength field is set.
      */
     @java.lang.Override
     public boolean hasKvsLength() {
-      return ((bitField0_ & 0x00000001) != 0);
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>required uint32 kvsLength = 1;</code>
+     * <code>required uint32 kvsLength = 2;</code>
      * @return The kvsLength.
      */
     @java.lang.Override
@@ -196,18 +268,18 @@ public final class TrailerProtos {
       return kvsLength_;
     }
 
-    public static final int MINKEY_FIELD_NUMBER = 2;
+    public static final int MINKEY_FIELD_NUMBER = 3;
     private volatile java.lang.Object minKey_;
     /**
-     * <code>required string minKey = 2;</code>
+     * <code>required string minKey = 3;</code>
      * @return Whether the minKey field is set.
      */
     @java.lang.Override
     public boolean hasMinKey() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>required string minKey = 2;</code>
+     * <code>required string minKey = 3;</code>
      * @return The minKey.
      */
     @java.lang.Override
@@ -226,7 +298,7 @@ public final class TrailerProtos {
       }
     }
     /**
-     * <code>required string minKey = 2;</code>
+     * <code>required string minKey = 3;</code>
      * @return The bytes for minKey.
      */
     @java.lang.Override
@@ -244,18 +316,18 @@ public final class TrailerProtos {
       }
     }
 
-    public static final int MAXKEY_FIELD_NUMBER = 3;
+    public static final int MAXKEY_FIELD_NUMBER = 4;
     private volatile java.lang.Object maxKey_;
     /**
-     * <code>required string maxKey = 3;</code>
+     * <code>required string maxKey = 4;</code>
      * @return Whether the maxKey field is set.
      */
     @java.lang.Override
     public boolean hasMaxKey() {
-      return ((bitField0_ & 0x00000004) != 0);
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>required string maxKey = 3;</code>
+     * <code>required string maxKey = 4;</code>
      * @return The maxKey.
      */
     @java.lang.Override
@@ -274,7 +346,7 @@ public final class TrailerProtos {
       }
     }
     /**
-     * <code>required string maxKey = 3;</code>
+     * <code>required string maxKey = 4;</code>
      * @return The bytes for maxKey.
      */
     @java.lang.Override
@@ -292,18 +364,18 @@ public final class TrailerProtos {
       }
     }
 
-    public static final int BLOOMFILTERLENGTH_FIELD_NUMBER = 4;
+    public static final int BLOOMFILTERLENGTH_FIELD_NUMBER = 5;
     private int bloomFilterLength_;
     /**
-     * <code>required uint32 bloomFilterLength = 4;</code>
+     * <code>required uint32 bloomFilterLength = 5;</code>
      * @return Whether the bloomFilterLength field is set.
      */
     @java.lang.Override
     public boolean hasBloomFilterLength() {
-      return ((bitField0_ & 0x00000008) != 0);
+      return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>required uint32 bloomFilterLength = 4;</code>
+     * <code>required uint32 bloomFilterLength = 5;</code>
      * @return The bloomFilterLength.
      */
     @java.lang.Override
@@ -318,6 +390,10 @@ public final class TrailerProtos {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasMergedFile()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasKvsLength()) {
         memoizedIsInitialized = 0;
         return false;
@@ -342,16 +418,19 @@ public final class TrailerProtos {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (((bitField0_ & 0x00000001) != 0)) {
-        output.writeUInt32(1, kvsLength_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, mergedFile_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, minKey_);
+        output.writeUInt32(2, kvsLength_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, maxKey_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, minKey_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
-        output.writeUInt32(4, bloomFilterLength_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, maxKey_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeUInt32(5, bloomFilterLength_);
       }
       unknownFields.writeTo(output);
     }
@@ -363,18 +442,21 @@ public final class TrailerProtos {
 
       size = 0;
       if (((bitField0_ & 0x00000001) != 0)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, kvsLength_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, mergedFile_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, minKey_);
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, kvsLength_);
       }
       if (((bitField0_ & 0x00000004) != 0)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, maxKey_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, minKey_);
       }
       if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, maxKey_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(4, bloomFilterLength_);
+          .computeUInt32Size(5, bloomFilterLength_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -391,6 +473,11 @@ public final class TrailerProtos {
       }
       org.inlighting.proto.TrailerProtos.Trailer other = (org.inlighting.proto.TrailerProtos.Trailer) obj;
 
+      if (hasMergedFile() != other.hasMergedFile()) return false;
+      if (hasMergedFile()) {
+        if (!getMergedFile()
+            .equals(other.getMergedFile())) return false;
+      }
       if (hasKvsLength() != other.hasKvsLength()) return false;
       if (hasKvsLength()) {
         if (getKvsLength()
@@ -422,6 +509,10 @@ public final class TrailerProtos {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasMergedFile()) {
+        hash = (37 * hash) + MERGEDFILE_FIELD_NUMBER;
+        hash = (53 * hash) + getMergedFile().hashCode();
+      }
       if (hasKvsLength()) {
         hash = (37 * hash) + KVSLENGTH_FIELD_NUMBER;
         hash = (53 * hash) + getKvsLength();
@@ -571,14 +662,16 @@ public final class TrailerProtos {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        kvsLength_ = 0;
+        mergedFile_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        minKey_ = "";
+        kvsLength_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        maxKey_ = "";
+        minKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        bloomFilterLength_ = 0;
+        maxKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        bloomFilterLength_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -608,20 +701,24 @@ public final class TrailerProtos {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.kvsLength_ = kvsLength_;
           to_bitField0_ |= 0x00000001;
         }
+        result.mergedFile_ = mergedFile_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.kvsLength_ = kvsLength_;
           to_bitField0_ |= 0x00000002;
         }
-        result.minKey_ = minKey_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.maxKey_ = maxKey_;
+        result.minKey_ = minKey_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.bloomFilterLength_ = bloomFilterLength_;
           to_bitField0_ |= 0x00000008;
+        }
+        result.maxKey_ = maxKey_;
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.bloomFilterLength_ = bloomFilterLength_;
+          to_bitField0_ |= 0x00000010;
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -672,16 +769,21 @@ public final class TrailerProtos {
 
       public Builder mergeFrom(org.inlighting.proto.TrailerProtos.Trailer other) {
         if (other == org.inlighting.proto.TrailerProtos.Trailer.getDefaultInstance()) return this;
+        if (other.hasMergedFile()) {
+          bitField0_ |= 0x00000001;
+          mergedFile_ = other.mergedFile_;
+          onChanged();
+        }
         if (other.hasKvsLength()) {
           setKvsLength(other.getKvsLength());
         }
         if (other.hasMinKey()) {
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
           minKey_ = other.minKey_;
           onChanged();
         }
         if (other.hasMaxKey()) {
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000008;
           maxKey_ = other.maxKey_;
           onChanged();
         }
@@ -695,6 +797,9 @@ public final class TrailerProtos {
 
       @java.lang.Override
       public final boolean isInitialized() {
+        if (!hasMergedFile()) {
+          return false;
+        }
         if (!hasKvsLength()) {
           return false;
         }
@@ -730,17 +835,101 @@ public final class TrailerProtos {
       }
       private int bitField0_;
 
+      private java.lang.Object mergedFile_ = "";
+      /**
+       * <code>required string mergedFile = 1;</code>
+       * @return Whether the mergedFile field is set.
+       */
+      public boolean hasMergedFile() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>required string mergedFile = 1;</code>
+       * @return The mergedFile.
+       */
+      public java.lang.String getMergedFile() {
+        java.lang.Object ref = mergedFile_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            mergedFile_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string mergedFile = 1;</code>
+       * @return The bytes for mergedFile.
+       */
+      public com.google.protobuf.ByteString
+          getMergedFileBytes() {
+        java.lang.Object ref = mergedFile_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          mergedFile_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string mergedFile = 1;</code>
+       * @param value The mergedFile to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMergedFile(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        mergedFile_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string mergedFile = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMergedFile() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mergedFile_ = getDefaultInstance().getMergedFile();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string mergedFile = 1;</code>
+       * @param value The bytes for mergedFile to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMergedFileBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        mergedFile_ = value;
+        onChanged();
+        return this;
+      }
+
       private int kvsLength_ ;
       /**
-       * <code>required uint32 kvsLength = 1;</code>
+       * <code>required uint32 kvsLength = 2;</code>
        * @return Whether the kvsLength field is set.
        */
       @java.lang.Override
       public boolean hasKvsLength() {
-        return ((bitField0_ & 0x00000001) != 0);
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>required uint32 kvsLength = 1;</code>
+       * <code>required uint32 kvsLength = 2;</code>
        * @return The kvsLength.
        */
       @java.lang.Override
@@ -748,22 +937,22 @@ public final class TrailerProtos {
         return kvsLength_;
       }
       /**
-       * <code>required uint32 kvsLength = 1;</code>
+       * <code>required uint32 kvsLength = 2;</code>
        * @param value The kvsLength to set.
        * @return This builder for chaining.
        */
       public Builder setKvsLength(int value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         kvsLength_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required uint32 kvsLength = 1;</code>
+       * <code>required uint32 kvsLength = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearKvsLength() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         kvsLength_ = 0;
         onChanged();
         return this;
@@ -771,14 +960,14 @@ public final class TrailerProtos {
 
       private java.lang.Object minKey_ = "";
       /**
-       * <code>required string minKey = 2;</code>
+       * <code>required string minKey = 3;</code>
        * @return Whether the minKey field is set.
        */
       public boolean hasMinKey() {
-        return ((bitField0_ & 0x00000002) != 0);
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>required string minKey = 2;</code>
+       * <code>required string minKey = 3;</code>
        * @return The minKey.
        */
       public java.lang.String getMinKey() {
@@ -796,7 +985,7 @@ public final class TrailerProtos {
         }
       }
       /**
-       * <code>required string minKey = 2;</code>
+       * <code>required string minKey = 3;</code>
        * @return The bytes for minKey.
        */
       public com.google.protobuf.ByteString
@@ -813,7 +1002,7 @@ public final class TrailerProtos {
         }
       }
       /**
-       * <code>required string minKey = 2;</code>
+       * <code>required string minKey = 3;</code>
        * @param value The minKey to set.
        * @return This builder for chaining.
        */
@@ -822,23 +1011,23 @@ public final class TrailerProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         minKey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string minKey = 2;</code>
+       * <code>required string minKey = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearMinKey() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         minKey_ = getDefaultInstance().getMinKey();
         onChanged();
         return this;
       }
       /**
-       * <code>required string minKey = 2;</code>
+       * <code>required string minKey = 3;</code>
        * @param value The bytes for minKey to set.
        * @return This builder for chaining.
        */
@@ -847,7 +1036,7 @@ public final class TrailerProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         minKey_ = value;
         onChanged();
         return this;
@@ -855,14 +1044,14 @@ public final class TrailerProtos {
 
       private java.lang.Object maxKey_ = "";
       /**
-       * <code>required string maxKey = 3;</code>
+       * <code>required string maxKey = 4;</code>
        * @return Whether the maxKey field is set.
        */
       public boolean hasMaxKey() {
-        return ((bitField0_ & 0x00000004) != 0);
+        return ((bitField0_ & 0x00000008) != 0);
       }
       /**
-       * <code>required string maxKey = 3;</code>
+       * <code>required string maxKey = 4;</code>
        * @return The maxKey.
        */
       public java.lang.String getMaxKey() {
@@ -880,7 +1069,7 @@ public final class TrailerProtos {
         }
       }
       /**
-       * <code>required string maxKey = 3;</code>
+       * <code>required string maxKey = 4;</code>
        * @return The bytes for maxKey.
        */
       public com.google.protobuf.ByteString
@@ -897,7 +1086,7 @@ public final class TrailerProtos {
         }
       }
       /**
-       * <code>required string maxKey = 3;</code>
+       * <code>required string maxKey = 4;</code>
        * @param value The maxKey to set.
        * @return This builder for chaining.
        */
@@ -906,23 +1095,23 @@ public final class TrailerProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         maxKey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string maxKey = 3;</code>
+       * <code>required string maxKey = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearMaxKey() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         maxKey_ = getDefaultInstance().getMaxKey();
         onChanged();
         return this;
       }
       /**
-       * <code>required string maxKey = 3;</code>
+       * <code>required string maxKey = 4;</code>
        * @param value The bytes for maxKey to set.
        * @return This builder for chaining.
        */
@@ -931,7 +1120,7 @@ public final class TrailerProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         maxKey_ = value;
         onChanged();
         return this;
@@ -939,15 +1128,15 @@ public final class TrailerProtos {
 
       private int bloomFilterLength_ ;
       /**
-       * <code>required uint32 bloomFilterLength = 4;</code>
+       * <code>required uint32 bloomFilterLength = 5;</code>
        * @return Whether the bloomFilterLength field is set.
        */
       @java.lang.Override
       public boolean hasBloomFilterLength() {
-        return ((bitField0_ & 0x00000008) != 0);
+        return ((bitField0_ & 0x00000010) != 0);
       }
       /**
-       * <code>required uint32 bloomFilterLength = 4;</code>
+       * <code>required uint32 bloomFilterLength = 5;</code>
        * @return The bloomFilterLength.
        */
       @java.lang.Override
@@ -955,22 +1144,22 @@ public final class TrailerProtos {
         return bloomFilterLength_;
       }
       /**
-       * <code>required uint32 bloomFilterLength = 4;</code>
+       * <code>required uint32 bloomFilterLength = 5;</code>
        * @param value The bloomFilterLength to set.
        * @return This builder for chaining.
        */
       public Builder setBloomFilterLength(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         bloomFilterLength_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required uint32 bloomFilterLength = 4;</code>
+       * <code>required uint32 bloomFilterLength = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearBloomFilterLength() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         bloomFilterLength_ = 0;
         onChanged();
         return this;
@@ -1043,10 +1232,11 @@ public final class TrailerProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n)src/main/resources/protobuf/Trailer.pr" +
-      "oto\022\024org.inlighting.proto\"W\n\007Trailer\022\021\n\t" +
-      "kvsLength\030\001 \002(\r\022\016\n\006minKey\030\002 \002(\t\022\016\n\006maxKe" +
-      "y\030\003 \002(\t\022\031\n\021bloomFilterLength\030\004 \002(\rB%\n\024or" +
-      "g.inlighting.protoB\rTrailerProtos"
+      "oto\022\024org.inlighting.proto\"k\n\007Trailer\022\022\n\n" +
+      "mergedFile\030\001 \002(\t\022\021\n\tkvsLength\030\002 \002(\r\022\016\n\006m" +
+      "inKey\030\003 \002(\t\022\016\n\006maxKey\030\004 \002(\t\022\031\n\021bloomFilt" +
+      "erLength\030\005 \002(\rB(\n\024org.inlighting.protoB\r" +
+      "TrailerProtos\240\001\001"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1057,7 +1247,7 @@ public final class TrailerProtos {
     internal_static_org_inlighting_proto_Trailer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_inlighting_proto_Trailer_descriptor,
-        new java.lang.String[] { "KvsLength", "MinKey", "MaxKey", "BloomFilterLength", });
+        new java.lang.String[] { "MergedFile", "KvsLength", "MinKey", "MaxKey", "BloomFilterLength", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
